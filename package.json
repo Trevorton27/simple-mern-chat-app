@@ -1,0 +1,23 @@
+{
+  "name": "mern-chat-app",
+  "version": "1.0.0",
+  "description": "mern stack stack chat app",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "author": "Trevor Mearns",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "create-react-app": "^5.0.0",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.9",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.1.2"
+  }
+}
