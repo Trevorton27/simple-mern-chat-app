@@ -8,7 +8,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (!name || !email || !password) {
     res.status(400);
-    throw new Error('Please Enter all the Feilds');
+    throw new Error('Please Enter all the Fields.');
   }
 
   const userExists = await User.findOne({ email });
@@ -17,10 +17,6 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('This user already exists.');
   }
-
-  matchPassword = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword, this.password);
-  };
 
   const user = await User.create({
     name,
@@ -46,4 +42,25 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerUser };
+const authUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+
+  const matchPassword = bcrypt.compare(password, user.password);
+
+  if (user && matchPassword) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      pic: user.pic,
+      token: jwtService(user._id)
+    });
+  } else {
+    res.status(401);
+    throw new Error('Invalid credentials. Please verify and try again.');
+  }
+});
+
+module.exports = { registerUser, authUser };

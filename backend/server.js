@@ -5,6 +5,7 @@ const colors = require('colors');
 const { chats } = require('./data/data');
 dotenv.config();
 const connectDB = require('./config/db');
+const { notFound, errorHandler } = require('./middleware/errorHandler');
 connectDB();
 
 app.use(express.json());
@@ -23,6 +24,9 @@ app.use('/api/user', require('./serverRoutes/userRoute'));
 //   res.send(singleChat);
 //   console.log('singleChat: ', singleChat);
 // });
+
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log(`server started on ${PORT}`.blue.bold));
