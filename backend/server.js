@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/user', require('./serverRoutes/userRoute'));
-app.use('/api/chat', chatRoutes);
+app.use('/api/chat', require('./serverRoutes/chatRoute'));
 
 app.use(notFound);
 app.use(errorHandler);
