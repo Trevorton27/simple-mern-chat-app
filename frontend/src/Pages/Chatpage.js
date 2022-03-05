@@ -6,6 +6,7 @@ import Slider from '../components/Slider';
 
 const Chatpage = () => {
   const { user } = ChatState();
+
   return (
     <div style={{ width: '100%' }}>
       {user && <Slider />}

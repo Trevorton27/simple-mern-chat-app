@@ -4,7 +4,7 @@ import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
 import { useState } from 'react';
 import axios from 'axios';
-import { useToast } from '@chakra-ui/react';
+import { Tooltip, useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 
 const Login = () => {
@@ -103,17 +103,23 @@ const Login = () => {
       >
         Login
       </Button>
-      <Button
-        variant='solid'
-        colorScheme='red'
-        width='100%'
-        onClick={() => {
-          setEmail('guest@example.com');
-          setPassword('123456');
-        }}
+      <Tooltip
+        label='Click this button to populate the form fields and login as a guest.'
+        hasArrow
+        placement='bottom'
       >
-        Get Guest User Credentials
-      </Button>
+        <Button
+          variant='solid'
+          colorScheme='red'
+          width='100%'
+          onClick={() => {
+            setEmail('guest@example.com');
+            setPassword('123456');
+          }}
+        >
+          Login as a Guest
+        </Button>
+      </Tooltip>
     </VStack>
   );
 };
