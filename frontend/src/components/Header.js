@@ -30,7 +30,7 @@ import { useHistory } from 'react-router-dom';
 import { ChatState } from '../context/ChatProvider';
 import axios from 'axios';
 
-const Slider = () => {
+const Header = () => {
   const [search, setSearch] = useState('');
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -195,7 +195,7 @@ const Slider = () => {
                 <UserListItem
                   key={user._id}
                   user={user}
-                  handleFunction={() => accessChat(user._id)}
+                  genericHandleFunction={() => accessChat(user._id)}
                 />
               ))
             )}
@@ -207,4 +207,4 @@ const Slider = () => {
   );
 };
 
-export default Slider;
+export default Header;

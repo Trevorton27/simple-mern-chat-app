@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { getSender } from '../config/ChatLogic';
 import ChatSearchLoading from './ChatSearchLoading';
+import GroupChatModal from './GroupChatModal';
 import { Button } from '@chakra-ui/react';
 import { ChatState } from '../context/ChatProvider';
 
@@ -66,13 +67,16 @@ const ChatList = () => {
         alignItems='center'
       >
         <Text fontSize='xl'>Your Chats</Text>
-        <Button
-          d='flex'
-          fontSize={{ base: '17px', md: '10px', lg: '17px' }}
-          rightIcon={<AddIcon />}
-        >
-          Create New Group Chat
-        </Button>
+
+        <GroupChatModal>
+          <Button
+            d='flex'
+            fontSize={{ base: '17px', md: '10px', lg: '17px' }}
+            rightIcon={<AddIcon />}
+          >
+            Create New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
       <Box
         d='flex'

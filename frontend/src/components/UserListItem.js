@@ -1,14 +1,14 @@
 import { Avatar } from '@chakra-ui/avatar';
 import { Box, Text } from '@chakra-ui/layout';
 
-const UserListItem = ({ user, handleFunction }) => {
+const UserListItem = ({ user, genericHandleFunction }) => {
   return (
     <Box
-      onClick={handleFunction}
+      onClick={genericHandleFunction}
       cursor='pointer'
       bg='#E8E8E8'
       _hover={{
-        background: '#38B2AC',
+        background: '#0155fd',
         color: 'white'
       }}
       w='100%'
