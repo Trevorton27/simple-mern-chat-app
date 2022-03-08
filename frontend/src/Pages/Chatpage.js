@@ -1,14 +1,14 @@
 import { ChatState } from '../context/ChatProvider';
 import { Box } from '@chakra-ui/layout';
 import ChatList from '../components/ChatList';
-import Chat from '../components/Chat';
+import Chat from '../components/ChatContainer';
 import Header from '../components/Header';
 
 const Chatpage = () => {
   const { user } = ChatState();
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', backgroundColor: '#000' }}>
       {user && <Header />}
       <Box d='flex' justifyContent='space-between' w='100%' h='91.5vh' p='10px'>
         {user && <Chat />}

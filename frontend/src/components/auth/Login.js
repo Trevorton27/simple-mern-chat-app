@@ -104,6 +104,7 @@ const Login = () => {
         Login
       </Button>
       <Tooltip
+        style={{ textAlign: 'center' }}
         label='Click this button to populate the form fields and login as a guest.'
         hasArrow
         placement='bottom'
