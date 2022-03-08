@@ -162,7 +162,7 @@ export const GroupChatModal = ({ children }) => {
                 <UserBadge
                   key={user._id}
                   user={user}
-                  genericHandleFunction={() => handleDelete(user)}
+                  genericHandlerFunction={() => handleDelete(user)}
                 />
               ))}
             </Box>
@@ -176,7 +176,7 @@ export const GroupChatModal = ({ children }) => {
                   <UserListItem
                     key={user._id}
                     user={user}
-                    genericHandleFunction={() => handleGroup(user)}
+                    genericHandlerFunction={() => handleGroup(user)}
                   />
                 ))
             )}

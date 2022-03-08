@@ -1,7 +1,7 @@
 import { CloseIcon } from '@chakra-ui/icons';
 import { Badge } from '@chakra-ui/layout';
 
-const UserBadge = ({ user, genericHandleFunction, admin }) => {
+const UserBadge = ({ user, genericHandlerFunction, admin }) => {
   return (
     <Badge
       px={2}
@@ -13,7 +13,7 @@ const UserBadge = ({ user, genericHandleFunction, admin }) => {
       fontSize={12}
       colorScheme='blue'
       cursor='pointer'
-      onClick={genericHandleFunction}
+      onClick={genericHandlerFunction}
     >
       {user.name}
       {admin === user._id && <span> (Admin)</span>}

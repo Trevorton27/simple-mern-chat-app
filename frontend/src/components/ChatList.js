@@ -12,7 +12,8 @@ import { ChatState } from '../context/ChatProvider';
 const ChatList = () => {
   const [loggedUser, setLoggedUser] = useState();
 
-  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
+  const { selectedChat, setSelectedChat, user, chats, setChats, fetchAgain } =
+    ChatState();
 
   const toast = useToast();
 
@@ -43,7 +44,7 @@ const ChatList = () => {
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
     fetchChats();
     // eslint-disable-next-line
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
