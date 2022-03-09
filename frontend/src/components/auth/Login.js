@@ -4,7 +4,7 @@ import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
 import { useState } from 'react';
 import axios from 'axios';
-import { Tooltip, useToast } from '@chakra-ui/react';
+import { Tooltip, useToast, Link } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 
 const Login = () => {
@@ -121,6 +121,7 @@ const Login = () => {
           Login as a Guest
         </Button>
       </Tooltip>
+      <Link>Forgot Password?</Link>
     </VStack>
   );
 };
