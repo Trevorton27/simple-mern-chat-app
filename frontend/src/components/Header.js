@@ -195,7 +195,7 @@ const Header = () => {
                 <UserListItem
                   key={user._id}
                   user={user}
-                  genericHandleFunction={() => accessChat(user._id)}
+                  genericHandlerFunction={() => accessChat(user._id)}
                 />
               ))
             )}

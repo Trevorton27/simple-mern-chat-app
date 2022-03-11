@@ -11,18 +11,25 @@ import {
   useDisclosure,
   IconButton,
   Text,
-  Image
+  Image,
+  Tooltip
 } from '@chakra-ui/react';
 
 const ProfileModal = ({ user, children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  console.log('user: ', user);
+
   return (
     <>
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <IconButton d={{ base: 'flex' }} icon={<ViewIcon />} onClick={onOpen} />
+        <Tooltip label='Chat partner info.' hasArrow placement='bottom-end'>
+          <IconButton
+            d={{ base: 'flex' }}
+            icon={<ViewIcon />}
+            onClick={onOpen}
+          />
+        </Tooltip>
       )}
       <Modal size='lg' onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
