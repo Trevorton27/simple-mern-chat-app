@@ -11,7 +11,9 @@ import UpdateGroupChatModal from './UpdateGroupChatModal';
 import MessagesDisplay from './MessagesDisplay';
 import axios from 'axios';
 import './style.css';
-
+import io from 'socket.io-client';
+const ENDPOINT = 'http://localhost:5000';
+let socket, selectedChatCompare;
 const Chat = () => {
   const { fetchAgain, setFetchAgain, user, selectedChat, setSelectedChat } =
     ChatState();
@@ -23,6 +25,12 @@ const Chat = () => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit('setup', user);
+    socket.on('connected', () => setSocketConnected(true));
+  });
 
   const handleTyping = (e) => {
     setNewMessage(e.target.value);
@@ -48,7 +56,7 @@ const Chat = () => {
         );
 
         console.log('data: ', data);
-
+        socket.emit('new message', data);
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -82,6 +90,7 @@ const Chat = () => {
       console.log('messages: ', messages);
       setMessages(data);
       setLoading(false);
+      socket.emit('join chat', selectedChat._id);
     } catch (error) {
       toast({
         title: 'Error Occured!',
@@ -96,9 +105,22 @@ const Chat = () => {
 
   useEffect(() => {
     fetchMessages();
-
+    selectedChatCompare = selectedChat;
     // eslint-disable-next-line
-  }, []);
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on('message received', (newMessageReceived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
+        //give notification
+      } else {
+        setMessages([...messages, newMessageReceived]);
+      }
+    });
+  });
 
   return (
     <>
