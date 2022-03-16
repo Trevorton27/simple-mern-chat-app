@@ -28,6 +28,9 @@ import UserListItem from './UserListItem';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ChatState } from '../context/ChatProvider';
+import { getSender } from '../config/ChatLogic';
+import NotificationBadge from 'react-notification-badge';
+import { Effect } from 'react-notification-badge';
 import axios from 'axios';
 
 const Header = () => {
@@ -43,8 +46,8 @@ const Header = () => {
   const {
     setSelectedChat,
     user,
-    //notification,
-    //setNotification,
+    notifications,
+    setNotifications,
     chats,
     setChats
   } = ChatState();
@@ -150,8 +153,28 @@ const Header = () => {
           </Tooltip>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notifications.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize='2xl' m={1} />
             </MenuButton>
+            <MenuList pl={2}>
+              {!notifications.length && 'You have no new messages'}
+              {notifications.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotifications(notifications.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} bg='white' rightIcon={<ChevronDownIcon />}>

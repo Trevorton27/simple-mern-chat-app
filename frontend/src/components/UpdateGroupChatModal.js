@@ -207,7 +207,11 @@ const UpdateGroupChatModal = ({ fetchMessages }) => {
 
   return (
     <>
-      <Tooltip label='Chat Details And Options.' hasArrow placement='bottom'>
+      <Tooltip
+        label='Group Chat Details And Options.'
+        hasArrow
+        placement='bottom'
+      >
         <IconButton
           d={{ base: 'flex' }}
           icon={<HamburgerIcon />}

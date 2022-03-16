@@ -1,4 +1,6 @@
 import { ViewIcon } from '@chakra-ui/icons';
+import { getSender } from '../config/ChatLogic';
+import { ChatState } from '../context/ChatProvider';
 import {
   Modal,
   ModalOverlay,
@@ -15,21 +17,33 @@ import {
   Tooltip
 } from '@chakra-ui/react';
 
-const ProfileModal = ({ user, children }) => {
+const ProfileModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { user, selectedChat } = ChatState();
   return (
     <>
       {children ? (
         <span onClick={onOpen}>{children}</span>
       ) : (
-        <Tooltip label='Chat partner info.' hasArrow placement='bottom-end'>
-          <IconButton
-            d={{ base: 'flex' }}
-            icon={<ViewIcon />}
-            onClick={onOpen}
-          />
-        </Tooltip>
+        <>
+          <Text style={{ fontSize: '18px' }}>
+            You are in a one on one chat with{' '}
+            {getSender(user, selectedChat.users)}
+          </Text>
+          <Tooltip
+            style={{ textAlign: 'center' }}
+            label='Click for chat partner info.'
+            hasArrow
+            placement='bottom'
+          >
+            <IconButton
+              d={{ base: 'flex' }}
+              icon={<ViewIcon />}
+              onClick={onOpen}
+            />
+          </Tooltip>
+        </>
       )}
       <Modal size='lg' onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />

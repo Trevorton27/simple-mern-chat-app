@@ -9,14 +9,24 @@ import ProfileModal from './ProfileModal';
 import { getSender, getSenderInfo } from '../config/ChatLogic';
 import UpdateGroupChatModal from './UpdateGroupChatModal';
 import MessagesDisplay from './MessagesDisplay';
+import Lottie from 'react-lottie';
+import animationData from './typingAnimation/3759-typing.json';
 import axios from 'axios';
 import './style.css';
 import io from 'socket.io-client';
 const ENDPOINT = 'http://localhost:5000';
 let socket, selectedChatCompare;
+
 const Chat = () => {
-  const { fetchAgain, setFetchAgain, user, selectedChat, setSelectedChat } =
-    ChatState();
+  const {
+    fetchAgain,
+    setFetchAgain,
+    user,
+    selectedChat,
+    setSelectedChat,
+    notifications,
+    setNotifications
+  } = ChatState();
 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,18 +36,47 @@ const Chat = () => {
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
+
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit('setup', user);
     socket.on('connected', () => setSocketConnected(true));
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop typing', () => setIsTyping(false));
   });
 
   const handleTyping = (e) => {
     setNewMessage(e.target.value);
+
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    let timer = 3000;
+    setTimeout(() => {
+      let currentTime = new Date().getTime();
+      let timeDifferential = currentTime - lastTypingTime;
+      if (timeDifferential >= timer && typing) {
+        socket.emit('stop typing', selectedChat._id);
+        setTyping(false);
+      }
+    }, timer);
   };
 
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
+      socket.emit('stop typing', selectedChat._id);
       try {
         const config = {
           headers: {
@@ -109,13 +148,17 @@ const Chat = () => {
     // eslint-disable-next-line
   }, [selectedChat]);
 
+  console.log('notification: ', notifications);
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        //give notification
+        if (!notifications.includes(newMessageReceived)) {
+          setNotifications([newMessageReceived, ...notifications]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageReceived]);
       }
@@ -141,17 +184,19 @@ const Chat = () => {
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat('')}
             />
+
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
-                  {getSender(user, selectedChat.users)}
                   <ProfileModal
                     user={getSenderInfo(user, selectedChat.users)}
                   />
                 </>
               ) : (
                 <>
-                  {selectedChat.chatName.toUpperCase()}
+                  <Text style={{ fontSize: '18px' }}>
+                    You are in a group chat named {selectedChat.chatName}
+                  </Text>
                   <UpdateGroupChatModal
                     fetchMessages={fetchMessages}
                     fetchAgain={fetchAgain}
@@ -193,12 +238,12 @@ const Chat = () => {
             >
               {istyping ? (
                 <div>
-                  {/* <Lottie
+                  <Lottie
                     options={defaultOptions}
-                    // height={50}
+                    height={50}
                     width={70}
                     style={{ marginBottom: 15, marginLeft: 0 }}
-                  /> */}
+                  />
                 </div>
               ) : (
                 <></>
