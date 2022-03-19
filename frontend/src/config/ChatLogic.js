@@ -1,7 +1,3 @@
-export const getSender = (loggedUser, users) => {
-  return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
-};
-
 export const getSenderInfo = (loggedUser, users) => {
   return users[0]._id === loggedUser._id ? users[1] : users[0];
 };
@@ -40,6 +36,10 @@ export const isSameSenderMargin = (messages, m, i, userId) => {
   )
     return 0;
   else return 'auto';
+};
+
+export const getSender = (loggedUser, users) => {
+  return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
 };
 
 export const isSameUser = (messages, m, i) => {

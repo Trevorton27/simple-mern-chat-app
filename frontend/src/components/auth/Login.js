@@ -20,7 +20,7 @@ const Login = () => {
     setLoading(true);
     if (!email || !password) {
       toast({
-        title: 'Please Fill all the Feilds',
+        title: 'Please fill in all fields',
         status: 'warning',
         duration: 5000,
         isClosable: true,
@@ -30,7 +30,6 @@ const Login = () => {
       return;
     }
 
-    // console.log(email, password);
     try {
       const config = {
         headers: {
@@ -53,6 +52,8 @@ const Login = () => {
         position: 'bottom'
       });
       localStorage.setItem('userInfo', JSON.stringify(data));
+      //store the data from
+
       setLoading(false);
       history.push('/chats');
     } catch (error) {

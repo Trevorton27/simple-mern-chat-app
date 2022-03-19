@@ -20,6 +20,7 @@ const ChatProvider = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
+  console.log('user: ', user);
   return (
     <ChatContext.Provider
       value={{

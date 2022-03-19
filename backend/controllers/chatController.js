@@ -175,11 +175,14 @@ const addUserToGroup = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteChat = asyncHandler(async (req, res) => {});
+
 module.exports = {
   accessChat,
   fetchChats,
   createGroupChat,
   renameGroup,
   addUserToGroup,
-  removeUserFromGroup
+  removeUserFromGroup,
+  deleteChat
 };

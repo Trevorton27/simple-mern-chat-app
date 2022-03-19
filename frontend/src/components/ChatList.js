@@ -40,6 +40,10 @@ const ChatList = () => {
     }
   };
 
+  const deleteChat = (id) => {
+    chats.filter((chat) => id !== chat._id);
+  };
+
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
     fetchChats();
