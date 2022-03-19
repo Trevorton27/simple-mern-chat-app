@@ -18,16 +18,6 @@ const ENDPOINT = 'http://localhost:5000';
 let socket, selectedChatCompare;
 
 const Chat = () => {
-  const {
-    fetchAgain,
-    setFetchAgain,
-    user,
-    selectedChat,
-    setSelectedChat,
-    notifications,
-    setNotifications
-  } = ChatState();
-
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
@@ -45,34 +35,15 @@ const Chat = () => {
     }
   };
 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit('setup', user);
-    socket.on('connected', () => setSocketConnected(true));
-    socket.on('typing', () => setIsTyping(true));
-    socket.on('stop typing', () => setIsTyping(false));
-  });
-
-  const handleTyping = (e) => {
-    setNewMessage(e.target.value);
-
-    if (!socketConnected) return;
-
-    if (!typing) {
-      setTyping(true);
-      socket.emit('typing', selectedChat._id);
-    }
-    let lastTypingTime = new Date().getTime();
-    let timer = 3000;
-    setTimeout(() => {
-      let currentTime = new Date().getTime();
-      let timeDifferential = currentTime - lastTypingTime;
-      if (timeDifferential >= timer && typing) {
-        socket.emit('stop typing', selectedChat._id);
-        setTyping(false);
-      }
-    }, timer);
-  };
+  const {
+    fetchAgain,
+    setFetchAgain,
+    user,
+    selectedChat,
+    setSelectedChat,
+    notifications,
+    setNotifications
+  } = ChatState();
 
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
@@ -143,12 +114,19 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit('setup', user);
+    socket.on('connected', () => setSocketConnected(true));
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop typing', () => setIsTyping(false));
+  });
+
+  useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
 
-  console.log('notification: ', notifications);
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
       if (
@@ -164,6 +142,29 @@ const Chat = () => {
       }
     });
   });
+
+  const handleTyping = (e) => {
+    setNewMessage(e.target.value);
+
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit('typing', selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    let timer = 3000;
+    setTimeout(() => {
+      let currentTime = new Date().getTime();
+      let timeDifferential = currentTime - lastTypingTime;
+      if (timeDifferential >= timer && typing) {
+        socket.emit('stop typing', selectedChat._id);
+        setTyping(false);
+      }
+    }, timer);
+  };
+
+  console.log('notification: ', notifications);
 
   return (
     <>
@@ -188,6 +189,7 @@ const Chat = () => {
             {messages &&
               (!selectedChat.isGroupChat ? (
                 <>
+                  {getSender(user, selectedChat.users)}
                   <ProfileModal
                     user={getSenderInfo(user, selectedChat.users)}
                   />

@@ -24,14 +24,14 @@ const ChatProvider = ({ children }) => {
   return (
     <ChatContext.Provider
       value={{
+        fetchAgain,
+        setFetchAgain,
         selectedChat,
         setSelectedChat,
         user,
         setUser,
         chats,
         setChats,
-        fetchAgain,
-        setFetchAgain,
         notifications,
         setNotifications
       }}

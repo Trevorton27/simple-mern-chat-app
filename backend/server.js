@@ -2,6 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
 const colors = require('colors');
+const userRoute = require('./serverRoutes/userRoute');
+const chatRoute = require('./serverRoutes/chatRoute');
+const messageRoute = require('./serverRoutes/messageRoute');
 dotenv.config();
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
@@ -10,9 +13,9 @@ connectDB();
 
 app.use(express.json());
 
-app.use('/api/user', require('./serverRoutes/userRoute'));
-app.use('/api/chat', require('./serverRoutes/chatRoute'));
-app.use('/api/message', require('./serverRoutes/messageRoute'));
+app.use('/api/user', userRoute);
+app.use('/api/chat', chatRoute);
+app.use('/api/message', messageRoute);
 
 //----------------------Deployment-------------------------
 const __dirname1 = path.resolve();

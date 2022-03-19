@@ -3,6 +3,7 @@ import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
 import { useState } from 'react';
+import { ChatState } from '../context/ChatProvider';
 import axios from 'axios';
 import { Tooltip, useToast, Link } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
@@ -15,12 +16,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   const history = useHistory();
-
+  const { setUser } = ChatState();
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
       toast({
-        title: 'Please fill in all fields',
+        title: 'Please Fill all the Feilds',
         status: 'warning',
         duration: 5000,
         isClosable: true,
@@ -30,6 +31,7 @@ const Login = () => {
       return;
     }
 
+    // console.log(email, password);
     try {
       const config = {
         headers: {
@@ -37,12 +39,12 @@ const Login = () => {
         }
       };
 
-      const { data } = await axios.post(
+      const data = await axios.post(
         '/api/user/login',
         { email, password },
         config
       );
-
+      console.log('data: ', data);
       // console.log(JSON.stringify(data));
       toast({
         title: 'Login Successful',
@@ -52,9 +54,9 @@ const Login = () => {
         position: 'bottom'
       });
       localStorage.setItem('userInfo', JSON.stringify(data));
-      //store the data from
-
       setLoading(false);
+      const userInfo = JSON.parse(localStorage.getItem('userInfo')); //store the data from localstorage
+      setUser(userInfo);
       history.push('/chats');
     } catch (error) {
       toast({
@@ -68,6 +70,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
   return (
     <VStack spacing='10px'>
       <FormControl id='email' isRequired>
