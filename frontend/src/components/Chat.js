@@ -164,8 +164,6 @@ const Chat = () => {
     }, timer);
   };
 
-  console.log('notification: ', notifications);
-
   return (
     <>
       {selectedChat ? (

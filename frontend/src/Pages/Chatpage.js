@@ -7,7 +7,6 @@ import Header from '../components/Header';
 const Chatpage = () => {
   const { user } = ChatState();
   console.log('user: ', user);
-  window.location.reload();
 
   return (
     <div style={{ width: '100%', backgroundColor: '#000' }}>

@@ -2,26 +2,26 @@ import { Button } from '@chakra-ui/button';
 import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
-import { ChatState } from '../context/ChatProvider';
 import { useState } from 'react';
 import axios from 'axios';
-import { Tooltip, useToast, Link } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const toast = useToast();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [loading, setLoading] = useState(false);
-  const toast = useToast();
+
   const history = useHistory();
-  const { setUser } = ChatState();
+
   const submitHandler = async () => {
     setLoading(true);
     if (!email || !password) {
       toast({
-        title: 'Please Fill all the Fields',
+        title: 'Please Fill all the Feilds',
         status: 'warning',
         duration: 5000,
         isClosable: true,
@@ -44,7 +44,7 @@ const Login = () => {
         { email, password },
         config
       );
-      console.log('data: ', data);
+
       // console.log(JSON.stringify(data));
       toast({
         title: 'Login Successful',
@@ -53,12 +53,8 @@ const Login = () => {
         isClosable: true,
         position: 'bottom'
       });
-
-      //localStorage.setItem('userInfo', JSON.stringify(data));
+      localStorage.setItem('userInfo', JSON.stringify(data));
       setLoading(false);
-
-      const userInfo = JSON.parse(localStorage.getItem('userInfo')); //store the data from localstorage
-      setUser(userInfo);
       history.push('/chats');
     } catch (error) {
       toast({
@@ -109,25 +105,17 @@ const Login = () => {
       >
         Login
       </Button>
-      <Tooltip
-        style={{ textAlign: 'center' }}
-        label='Click this button to populate the form fields and login as a guest.'
-        hasArrow
-        placement='bottom'
+      <Button
+        variant='solid'
+        colorScheme='red'
+        width='100%'
+        onClick={() => {
+          setEmail('guest@example.com');
+          setPassword('123456');
+        }}
       >
-        <Button
-          variant='solid'
-          colorScheme='red'
-          width='100%'
-          onClick={() => {
-            setEmail('guest@example.com');
-            setPassword('123456');
-          }}
-        >
-          Login as a Guest
-        </Button>
-      </Tooltip>
-      <Link>Forgot Password?</Link>
+        Get Guest User Credentials
+      </Button>
     </VStack>
   );
 };
