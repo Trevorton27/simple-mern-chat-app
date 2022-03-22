@@ -6,12 +6,13 @@ async function connectDb() {
     mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useFindAndModify: false
+      useFindAndModify: false,
+      useCreateIndex: true
     });
     console.log('Mongodb connected yo!'.cyan.underline);
   } catch (error) {
     console.log(error.red.bold);
-    process.exit(1);
+    process.exit();
   }
 }
 
