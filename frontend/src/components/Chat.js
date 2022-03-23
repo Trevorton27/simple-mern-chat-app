@@ -45,6 +45,14 @@ const Chat = () => {
     setNotifications
   } = ChatState();
 
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit('setup', user);
+    socket.on('connected', () => setSocketConnected(true));
+    socket.on('typing', () => setIsTyping(true));
+    socket.on('stop typing', () => setIsTyping(false));
+  });
+
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
       socket.emit('stop typing', selectedChat._id);
@@ -112,14 +120,6 @@ const Chat = () => {
       });
     }
   };
-
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit('setup', user);
-    socket.on('connected', () => setSocketConnected(true));
-    socket.on('typing', () => setIsTyping(true));
-    socket.on('stop typing', () => setIsTyping(false));
-  });
 
   useEffect(() => {
     fetchMessages();
