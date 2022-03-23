@@ -1,8 +1,8 @@
 import { Button } from '@chakra-ui/button';
-import { FormControl, FormLabel, Form } from '@chakra-ui/form-control';
+import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/input';
 import { VStack } from '@chakra-ui/layout';
-import { ChatState } from '../context/ChatProvider';
+import { ChatState } from '../../context/ChatProvider';
 import { useState } from 'react';
 import axios from 'axios';
 import { Tooltip, useToast, Link } from '@chakra-ui/react';
@@ -71,61 +71,59 @@ const Login = () => {
   };
   return (
     <VStack spacing='10px'>
-      <Form>
-        <FormControl id='email' isRequired>
-          <FormLabel>Email Address</FormLabel>
+      <FormControl id='email' isRequired>
+        <FormLabel>Email Address</FormLabel>
+        <Input
+          value={email}
+          type='email'
+          placeholder='Enter Your Email Address'
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </FormControl>
+      <FormControl id='password' isRequired>
+        <FormLabel>Password</FormLabel>
+        <InputGroup size='md'>
           <Input
-            value={email}
-            type='email'
-            placeholder='Enter Your Email Address'
-            onChange={(e) => setEmail(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type={show ? 'text' : 'password'}
+            placeholder='Enter password'
           />
-        </FormControl>
-        <FormControl id='password' isRequired>
-          <FormLabel>Password</FormLabel>
-          <InputGroup size='md'>
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type={show ? 'text' : 'password'}
-              placeholder='Enter password'
-            />
-            <InputRightElement width='4.5rem'>
-              <Button h='1.75rem' size='sm' onClick={handleClick}>
-                {show ? 'Hide' : 'Show'}
-              </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
+          <InputRightElement width='4.5rem'>
+            <Button h='1.75rem' size='sm' onClick={handleClick}>
+              {show ? 'Hide' : 'Show'}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
+      <Button
+        colorScheme='blue'
+        width='100%'
+        style={{ marginTop: 15 }}
+        onClick={submitHandler}
+        isLoading={loading}
+      >
+        Login
+      </Button>
+      <Tooltip
+        style={{ textAlign: 'center' }}
+        label='Click this button to populate the form fields and login as a guest.'
+        hasArrow
+        placement='bottom'
+      >
         <Button
-          colorScheme='blue'
+          variant='solid'
+          colorScheme='red'
           width='100%'
-          style={{ marginTop: 15 }}
-          onClick={submitHandler}
-          isLoading={loading}
+          onClick={() => {
+            setEmail('guest@example.com');
+            setPassword('123456');
+          }}
         >
-          Login
+          Login as a Guest
         </Button>
-        <Tooltip
-          style={{ textAlign: 'center' }}
-          label='Click this button to populate the form fields and login as a guest.'
-          hasArrow
-          placement='bottom'
-        >
-          <Button
-            variant='solid'
-            colorScheme='red'
-            width='100%'
-            onClick={() => {
-              setEmail('guest@example.com');
-              setPassword('123456');
-            }}
-          >
-            Login as a Guest
-          </Button>
-        </Tooltip>
-        <Link>Forgot Password?</Link>
-      </Form>
+      </Tooltip>
+      <Link>Forgot Password?</Link>
     </VStack>
   );
 };
